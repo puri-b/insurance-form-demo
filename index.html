@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>จำลองคีย์ใบคำขอเอาประกันชีวิต (U14400)</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="brand">
+        <div class="logo">📝</div>
+        <div>
+          <div class="title">แบบจำลองคีย์ข้อมูลใบคำขอเอาประกันชีวิต (U14400)</div>
+          <div class="subtitle">สำหรับทดลองคีย์บนเว็บ (ไม่บันทึกลงฐานข้อมูล)</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" type="button" id="btnFillDemo">ใส่ข้อมูลตัวอย่าง</button>
+        <button class="btn btn-ghost" type="button" id="btnReset">ล้างฟอร์ม</button>
+        <button class="btn btn-primary" type="button" id="btnPreview">ดูข้อมูลสรุป</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <form id="appForm" class="card" autocomplete="off">
+      <!-- ===== Section: Header / Meta ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>ข้อมูลใบคำขอ</h2>
+          <p class="muted">อ้างอิงส่วนหัวเอกสาร/ประเภทคำขอและหน่วยงาน :contentReference[oaicite:1]{index=1}</p>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Bar Code (ถ้ามี)</label>
+            <input type="text" name="barcode" placeholder="สแกน/พิมพ์บาร์โค้ด" />
+          </div>
+
+          <div class="field">
+            <label>สาขา</label>
+            <select name="branch">
+              <option value="">- เลือก -</option>
+              <option>สำนักงานใหญ่</option>
+              <option>สำนักงานภูมิภาค</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ตัวแทน/หน่วย/รหัส</label>
+            <input type="text" name="agent_code" placeholder="เช่น หน่วย/ตัวแทน/รหัส" />
+          </div>
+
+          <div class="field">
+            <label>ประเภทคำขอ (เดิมเป็นตัวเลือก/ติ๊ก)</label>
+            <select name="application_type">
+              <option value="">- เลือก -</option>
+              <option>แบบมาตรฐาน / สุขภาพ</option>
+              <option>แบบยูนิตลิงค์</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>วันที่รับคำขอ</label>
+            <input type="date" name="received_date" />
+          </div>
+
+          <div class="field">
+            <label>หมายเหตุ</label>
+            <input type="text" name="header_note" placeholder="หมายเหตุเพิ่มเติม" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Section 1: Insured ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>ส่วนที่ 1 ข้อมูลผู้ขอเอาประกันภัย / ผู้เอาประกันภัย</h2>
+          <p class="muted">อ้างอิงข้อมูลส่วนต้นของแบบฟอร์ม :contentReference[oaicite:2]{index=2}</p>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>คำนำหน้า</label>
+            <select name="insured_title">
+              <option value="">- เลือก -</option>
+              <option>นาย</option>
+              <option>นาง</option>
+              <option>นางสาว</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ชื่อ</label>
+            <input type="text" name="insured_firstname" />
+          </div>
+
+          <div class="field">
+            <label>นามสกุล</label>
+            <input type="text" name="insured_lastname" />
+          </div>
+
+          <div class="field">
+            <label>เพศ (เดิมเป็นติ๊ก)</label>
+            <select name="insured_gender">
+              <option value="">- เลือก -</option>
+              <option>ชาย</option>
+              <option>หญิง</option>
+              <option>ไม่ระบุ</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>วันเดือนปีเกิด</label>
+            <input type="date" name="insured_dob" />
+          </div>
+
+          <div class="field">
+            <label>อายุ (ปี)</label>
+            <input type="number" min="0" name="insured_age" placeholder="เช่น 35" />
+          </div>
+
+          <div class="field">
+            <label>เลขบัตรประชาชน</label>
+            <input type="text" name="insured_id" inputmode="numeric" placeholder="13 หลัก" />
+          </div>
+
+          <div class="field">
+            <label>สัญชาติ</label>
+            <input type="text" name="insured_nationality" placeholder="เช่น ไทย" />
+          </div>
+
+          <div class="field">
+            <label>สถานภาพ (เดิมเป็นติ๊ก)</label>
+            <select name="insured_marital">
+              <option value="">- เลือก -</option>
+              <option>โสด</option>
+              <option>สมรส</option>
+              <option>หย่า</option>
+              <option>หม้าย</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>อีเมล</label>
+            <input type="email" name="insured_email" placeholder="example@email.com" />
+          </div>
+
+          <div class="field">
+            <label>โทรศัพท์มือถือ</label>
+            <input type="tel" name="insured_mobile" placeholder="0xx-xxx-xxxx" />
+          </div>
+
+          <div class="field">
+            <label>โทรศัพท์บ้าน/ที่ทำงาน</label>
+            <input type="text" name="insured_phone_other" placeholder="ถ้ามี" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">ที่อยู่ (ตามแบบฟอร์มมีหลายช่อง)</h3>
+        <div class="grid">
+          <div class="field col-2">
+            <label>ที่อยู่ตามทะเบียนบ้าน</label>
+            <textarea name="addr_registered" rows="3" placeholder="บ้านเลขที่/หมู่/ถนน/แขวง-ตำบล/เขต-อำเภอ/จังหวัด/รหัสไปรษณีย์"></textarea>
+          </div>
+
+          <div class="field col-2">
+            <label>ที่อยู่ปัจจุบัน</label>
+            <textarea name="addr_current" rows="3"></textarea>
+          </div>
+
+          <div class="field col-2">
+            <label>ที่อยู่ที่ทำงาน</label>
+            <textarea name="addr_work" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label>ที่อยู่ที่ติดต่อได้ (เดิมเป็นติ๊กเลือก)</label>
+            <select name="addr_contact_choice">
+              <option value="">- เลือก -</option>
+              <option>ตามทะเบียนบ้าน</option>
+              <option>ที่อยู่ปัจจุบัน</option>
+              <option>ที่อยู่ที่ทำงาน</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">อาชีพ/รายได้</h3>
+        <div class="grid">
+          <div class="field">
+            <label>อาชีพ</label>
+            <input type="text" name="insured_job" />
+          </div>
+
+          <div class="field">
+            <label>ตำแหน่ง</label>
+            <input type="text" name="insured_position" />
+          </div>
+
+          <div class="field">
+            <label>ลักษณะงาน/ประเภทกิจการ</label>
+            <input type="text" name="insured_job_desc" />
+          </div>
+
+          <div class="field">
+            <label>รายได้ต่อปี (บาท)</label>
+            <input type="number" min="0" name="insured_income_year" placeholder="เช่น 600000" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Section: Policy / Premium ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>แบบประกัน/เบี้ย/การชำระเงิน</h2>
+          <p class="muted">สรุปจากส่วน “จำนวนเงินที่ชำระ” และตัวเลือกงวด/วิธีชำระในแบบฟอร์ม :contentReference[oaicite:3]{index=3}</p>
+        </div>
+
+        <div class="grid">
+          <div class="field col-2">
+            <label>แผน/ชื่อแบบประกัน (ข้อความ)</label>
+            <input type="text" name="plan_name" placeholder="เช่น แบบประกัน/สัญญาเพิ่มเติม" />
+          </div>
+
+          <div class="field">
+            <label>จำนวนเงินเอาประกันภัย (บาท)</label>
+            <input type="number" min="0" name="sum_assured" />
+          </div>
+
+          <div class="field">
+            <label>เบี้ยประกันภัยรวม (บาท)</label>
+            <input type="number" min="0" name="total_premium" />
+          </div>
+
+          <div class="field">
+            <label>งวดการชำระ (เดิมเป็นติ๊ก)</label>
+            <select name="pay_frequency">
+              <option value="">- เลือก -</option>
+              <option>ครั้งเดียว</option>
+              <option>รายปี</option>
+              <option>ราย 6 เดือน</option>
+              <option>ราย 3 เดือน</option>
+              <option>รายเดือน</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>วิธีชำระ (เดิมเป็นติ๊ก)</label>
+            <select name="pay_method">
+              <option value="">- เลือก -</option>
+              <option>เงินสด</option>
+              <option>เช็ค</option>
+              <option>บัตรเครดิต</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>จำนวนเงินที่ชำระพร้อมใบคำขอ (บาท)</label>
+            <input type="number" min="0" name="paid_amount" />
+          </div>
+
+          <div class="field col-2">
+            <label>เลขที่ใบรับเงินชั่วคราว</label>
+            <input type="text" name="temp_receipt_no" />
+          </div>
+
+          <div class="field">
+            <label>ผู้ชำระเบี้ย: ชื่อ-สกุล</label>
+            <input type="text" name="payer_name" />
+          </div>
+
+          <div class="field">
+            <label>ผู้ชำระเบี้ย: อาชีพ</label>
+            <input type="text" name="payer_job" />
+          </div>
+
+          <div class="field">
+            <label>ผู้ชำระเบี้ย: ความสัมพันธ์</label>
+            <input type="text" name="payer_relation" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">การรับผลประโยชน์ผ่านบัญชีธนาคาร</h3>
+        <div class="grid">
+          <div class="field">
+            <label>ชื่อบัญชี</label>
+            <input type="text" name="bank_account_name" />
+          </div>
+
+          <div class="field">
+            <label>ธนาคาร</label>
+            <input type="text" name="bank_name" />
+          </div>
+
+          <div class="field">
+            <label>เลขที่บัญชี</label>
+            <input type="text" name="bank_account_no" inputmode="numeric" />
+          </div>
+
+          <div class="field">
+            <label>ต้องการโอนเข้าบัญชี? (เดิมเป็นข้อความยินยอม)</label>
+            <select name="bank_transfer_consent">
+              <option value="">- เลือก -</option>
+              <option>ยินยอม/ประสงค์โอนเข้าบัญชี</option>
+              <option>ไม่ประสงค์/รับเป็นเช็ค</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Section: Beneficiaries ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>ผู้รับประโยชน์</h2>
+          <p class="muted">แบบฟอร์มมีตาราง “ชื่อ-สกุล/เลขบัตร/อายุ/ความสัมพันธ์/ที่อยู่/ร้อยละ” :contentReference[oaicite:4]{index=4}</p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" id="benefTable">
+            <thead>
+              <tr>
+                <th style="width: 24%">ชื่อ-สกุล</th>
+                <th style="width: 14%">เลขบัตรประชาชน</th>
+                <th style="width: 8%">อายุ</th>
+                <th style="width: 14%">ความสัมพันธ์</th>
+                <th>ที่อยู่</th>
+                <th style="width: 10%">ร้อยละ</th>
+                <th style="width: 6%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- rows by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row-actions">
+          <button class="btn btn-secondary" type="button" id="btnAddBenef">+ เพิ่มผู้รับประโยชน์</button>
+        </div>
+      </section>
+
+      <!-- ===== Section: Health Questions (simulate) ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>คำถามสุขภาพ (จำลองการคีย์)</h2>
+          <p class="muted">ในเอกสารมีหลายข้อเป็น “ไม่เคย/เคย”, “ไม่มี/มี”, และรายการโรคจำนวนมาก — ในหน้านี้ทำเป็น dropdown + ช่องรายละเอียด :contentReference[oaicite:5]{index=5}</p>
+        </div>
+
+        <div class="grid">
+          <div class="field col-2">
+            <label>เคยป่วย/รักษา/ผ่าตัด/ตรวจสุขภาพสำคัญในช่วงที่ผ่านมา? (เดิมเป็นติ๊ก)</label>
+            <select name="health_history_any">
+              <option value="">- เลือก -</option>
+              <option>ไม่เคย</option>
+              <option>เคย</option>
+            </select>
+          </div>
+
+          <div class="field col-2">
+            <label>รายละเอียด (ถ้า “เคย”)</label>
+            <textarea name="health_history_detail" rows="3" placeholder="ระบุอาการ/โรค/วันเดือนปี/สถานพยาบาล/ผลการรักษา"></textarea>
+          </div>
+
+          <div class="field">
+            <label>สูบบุหรี่? (เดิมเป็นติ๊ก)</label>
+            <select name="smoking">
+              <option value="">- เลือก -</option>
+              <option>ไม่เคย</option>
+              <option>เคย</option>
+              <option>ปัจจุบัน</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ดื่มแอลกอฮอล์? (เดิมเป็นติ๊ก)</label>
+            <select name="alcohol">
+              <option value="">- เลือก -</option>
+              <option>ไม่เคย</option>
+              <option>เคย</option>
+              <option>ปัจจุบัน</option>
+            </select>
+          </div>
+
+          <div class="field col-2">
+            <label>โรคประจำตัว/โรคร้ายแรง (เลือกแบบ dropdown เพื่อจำลอง)</label>
+            <select name="disease_group">
+              <option value="">- เลือก -</option>
+              <option>ไม่มี</option>
+              <option>เบาหวาน</option>
+              <option>ความดันโลหิตสูง</option>
+              <option>โรคหัวใจ/หลอดเลือด</option>
+              <option>โรคมะเร็ง</option>
+              <option>โรคไต</option>
+              <option>โรคตับ</option>
+              <option>โรคปอด/ทางเดินหายใจ</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field col-2">
+            <label>รายละเอียดเพิ่มเติม</label>
+            <textarea name="disease_detail" rows="3" placeholder="ระบุชื่อโรค/ปีที่เริ่มเป็น/การรักษา/อาการปัจจุบัน/สถานพยาบาล"></textarea>
+          </div>
+
+          <div class="field">
+            <label>เคยตรวจ HIV? (เดิมเป็นติ๊ก)</label>
+            <select name="hiv">
+              <option value="">- เลือก -</option>
+              <option>ไม่เคย</option>
+              <option>เคย (ผลลบ)</option>
+              <option>เคย (ผลบวก)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>การตั้งครรภ์/เฉพาะสตรี (เดิมเป็นติ๊ก)</label>
+            <select name="pregnant_status">
+              <option value="">- เลือก -</option>
+              <option>ไม่เกี่ยวข้อง</option>
+              <option>ไม่ตั้งครรภ์</option>
+              <option>ตั้งครรภ์</option>
+              <option>หลังคลอดไม่นาน</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Section: FATCA / Consent ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>FATCA / การให้ความยินยอม</h2>
+          <p class="muted">อ้างอิงส่วน “Consent and Verification… FATCA” :contentReference[oaicite:6]{index=6}</p>
+        </div>
+
+        <div class="grid">
+          <div class="field col-2">
+            <label>สถานะเกี่ยวข้อง US Person? (เดิมเป็นข้อความ/ติ๊กยืนยัน)</label>
+            <select name="us_person">
+              <option value="">- เลือก -</option>
+              <option>ไม่ใช่ US Person</option>
+              <option>เป็น/อาจเป็น US Person</option>
+              <option>ไม่แน่ใจ</option>
+            </select>
+          </div>
+
+          <div class="field col-2">
+            <label>ยินยอมให้เปิดเผยข้อมูลตาม FATCA? (จำลอง)</label>
+            <select name="fatca_consent">
+              <option value="">- เลือก -</option>
+              <option>ยินยอม</option>
+              <option>ไม่ยินยอม</option>
+            </select>
+          </div>
+
+          <div class="field col-2">
+            <label>หมายเหตุ FATCA</label>
+            <textarea name="fatca_note" rows="3"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Footer ===== -->
+      <section class="section">
+        <div class="section-head">
+          <h2>สรุป/การลงนาม (จำลอง)</h2>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>จังหวัดที่ลงนาม</label>
+            <input type="text" name="sign_province" />
+          </div>
+
+          <div class="field">
+            <label>วันที่ลงนาม</label>
+            <input type="date" name="sign_date" />
+          </div>
+
+          <div class="field col-2">
+            <label>ชื่อผู้ลงนาม (ผู้เอาประกันภัย)</label>
+            <input type="text" name="sign_insured_name" />
+          </div>
+
+          <div class="field col-2">
+            <label>ชื่อพยาน/ตัวแทน (ถ้ามี)</label>
+            <input type="text" name="sign_witness_name" />
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button class="btn btn-primary" type="button" id="btnPreview2">ดูข้อมูลสรุป</button>
+          <button class="btn btn-ghost" type="button" id="btnCopyJson">คัดลอก JSON</button>
+        </div>
+
+        <p class="tiny muted">
+          *หน้านี้เป็น “แบบจำลอง” ไม่ได้บันทึกฐานข้อมูล และไม่มีการส่งข้อมูลออกอินเทอร์เน็ตโดยอัตโนมัติ
+        </p>
+      </section>
+    </form>
+
+    <!-- Preview Modal -->
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modal-backdrop" data-close="1"></div>
+      <div class="modal-dialog">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">สรุปข้อมูลที่กรอก (JSON)</div>
+            <div class="modal-subtitle">ใช้สำหรับตรวจสอบก่อนส่งเข้าระบบจริงในอนาคต</div>
+          </div>
+          <button class="icon-btn" type="button" data-close="1" aria-label="Close">✕</button>
+        </div>
+        <pre class="modal-body" id="previewBox"></pre>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" type="button" data-close="1">ปิด</button>
+          <button class="btn btn-primary" type="button" id="btnCopyJson2">คัดลอก JSON</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
