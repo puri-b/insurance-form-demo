@@ -18,6 +18,7 @@
       </div>
 
       <div class="actions">
+        <span class="badge" id="statusBadge"><b>โหมด:</b> <span id="modeText">ผู้เอาประกัน 16+ (ข้อ 15–28)</span></span>
         <button class="btn btn-ghost" type="button" id="btnFillDemo">ใส่ข้อมูลตัวอย่าง</button>
         <button class="btn btn-ghost" type="button" id="btnReset">ล้างฟอร์ม</button>
         <button class="btn btn-primary" type="button" id="btnPreview">ดูข้อมูลสรุป</button>
@@ -28,13 +29,34 @@
   <main class="container">
     <form id="appForm" class="card" autocomplete="off">
       <!-- ===== Section: Header / Meta ===== -->
-      <section class="section">
+      <section class="section" id="sec-meta">
         <div class="section-head">
-          <h2>ข้อมูลใบคำขอ</h2>
-          <p class="muted">อ้างอิงส่วนหัวเอกสาร/ประเภทคำขอและหน่วยงาน :contentReference[oaicite:1]{index=1}</p>
+          <h2>ข้อมูลใบคำขอ (ส่วนหัวเอกสาร)</h2>
+          <p class="muted">กรอกให้ครบตามฟอร์มจริง (ติ๊ก/checkbox ในแบบฟอร์ม → ใช้ dropdown ในหน้านี้)</p>
         </div>
 
         <div class="grid">
+          <div class="field col-2">
+            <label>ประเภทผู้เอาประกัน</label>
+            <select name="applicant_type" id="applicant_type">
+              <option value="">- เลือก -</option>
+              <option value="adult">ผู้เอาประกันอายุ 16 ปีขึ้นไป</option>
+              <option value="minor">ผู้เยาว์</option>
+            </select>
+            <div class="hint">เลือกข้อนี้เพื่อให้ระบบแสดงชุดคำถามที่ถูกต้อง (ผู้เยาว์ = ข้อ 6–14, อายุ 16+ = ข้อ 15–28)</div>
+          </div>
+
+          <div class="field col-2">
+            <label>ประเภทแบบคำขอ/แบบฟอร์ม</label>
+            <select name="application_type" id="application_type">
+              <option value="">- เลือก -</option>
+              <option value="standard">แบบมาตรฐาน / สุขภาพ</option>
+              <option value="unit">แบบยูนิตลิงค์ (Unit Linked)</option>
+              <option value="sio">แบบ SIO (คำถามสุขภาพเพิ่มเติม)</option>
+              <option value="other">อื่นๆ</option>
+            </select>
+          </div>
+
           <div class="field">
             <label>Bar Code (ถ้ามี)</label>
             <input type="text" name="barcode" placeholder="สแกน/พิมพ์บาร์โค้ด" />
@@ -51,21 +73,6 @@
           </div>
 
           <div class="field">
-            <label>ตัวแทน/หน่วย/รหัส</label>
-            <input type="text" name="agent_code" placeholder="เช่น หน่วย/ตัวแทน/รหัส" />
-          </div>
-
-          <div class="field">
-            <label>ประเภทคำขอ (เดิมเป็นตัวเลือก/ติ๊ก)</label>
-            <select name="application_type">
-              <option value="">- เลือก -</option>
-              <option>แบบมาตรฐาน / สุขภาพ</option>
-              <option>แบบยูนิตลิงค์</option>
-              <option>อื่นๆ</option>
-            </select>
-          </div>
-
-          <div class="field">
             <label>วันที่รับคำขอ</label>
             <input type="date" name="received_date" />
           </div>
@@ -74,16 +81,50 @@
             <label>หมายเหตุ</label>
             <input type="text" name="header_note" placeholder="หมายเหตุเพิ่มเติม" />
           </div>
+
+          <div class="field">
+            <label>หน่วย</label>
+            <input type="text" name="unit_name" placeholder="เช่น หน่วย A" />
+          </div>
+          <div class="field">
+            <label>ตัวแทน</label>
+            <input type="text" name="agent_name" placeholder="เช่น ชื่อ-สกุลตัวแทน" />
+          </div>
+          <div class="field">
+            <label>รหัสตัวแทน</label>
+            <input type="text" name="agent_code" placeholder="เช่น AG-001" />
+          </div>
+
+          <div class="field col-2">
+            <label>รหัสผู้ติดต่อกับผู้ลงทุนที่ได้รับความเห็นชอบ (1 / 2)</label>
+            <input type="text" name="investor_contact_codes" placeholder="เช่น IC-xxxx, IC-yyyy" />
+          </div>
+
+          <div class="field col-2">
+            <label>เอกสารประกอบใบคำขอ (เดิมเป็นติ๊ก → dropdown)</label>
+            <select name="attachments_pack">
+              <option value="">- เลือก -</option>
+              <option value="id_house">สำเนาบัตร + ทะเบียนบ้าน</option>
+              <option value="id_only">สำเนาบัตรประชาชน</option>
+              <option value="passport">สำเนาหนังสือเดินทาง</option>
+              <option value="other">อื่นๆ (ระบุ)</option>
+            </select>
+          </div>
+          <div class="field col-2">
+            <label>รายละเอียดเอกสารอื่นๆ (ถ้ามี)</label>
+            <input type="text" name="attachments_other_detail" placeholder="ระบุชื่อเอกสาร/จำนวนหน้า" />
+          </div>
         </div>
       </section>
 
-      <!-- ===== Section 1: Insured ===== -->
-      <section class="section">
+      <!-- ===== Section 1: Insured - Q1-3 ===== -->
+      <section class="section" id="sec-insured">
         <div class="section-head">
-          <h2>ส่วนที่ 1 ข้อมูลผู้ขอเอาประกันภัย / ผู้เอาประกันภัย</h2>
-          <p class="muted">อ้างอิงข้อมูลส่วนต้นของแบบฟอร์ม :contentReference[oaicite:2]{index=2}</p>
+          <h2>ส่วนที่ 1 ข้อมูลผู้ขอเอาประกันภัย / ผู้เอาประกันภัย (ข้อ 1–3)</h2>
+          <p class="muted">ช่องติ๊ก/checkbox ในแบบฟอร์ม → ใช้ dropdown</p>
         </div>
 
+        <h3 class="subhead">ข้อ 1 ข้อมูลส่วนบุคคล</h3>
         <div class="grid">
           <div class="field">
             <label>คำนำหน้า</label>
@@ -107,7 +148,7 @@
           </div>
 
           <div class="field">
-            <label>เพศ (เดิมเป็นติ๊ก)</label>
+            <label>เพศ</label>
             <select name="insured_gender">
               <option value="">- เลือก -</option>
               <option>ชาย</option>
@@ -132,12 +173,30 @@
           </div>
 
           <div class="field">
+            <label>วันหมดอายุบัตร</label>
+            <input type="date" name="insured_id_exp" />
+          </div>
+
+          <div class="field col-2">
+            <label>หนังสือเดินทางเลขที่</label>
+            <input type="text" name="insured_passport_no" />
+          </div>
+          <div class="field">
+            <label>วันหมดอายุหนังสือเดินทาง</label>
+            <input type="date" name="insured_passport_exp" />
+          </div>
+
+          <div class="field">
+            <label>เชื้อชาติ</label>
+            <input type="text" name="insured_race" placeholder="เช่น ไทย" />
+          </div>
+          <div class="field">
             <label>สัญชาติ</label>
             <input type="text" name="insured_nationality" placeholder="เช่น ไทย" />
           </div>
 
           <div class="field">
-            <label>สถานภาพ (เดิมเป็นติ๊ก)</label>
+            <label>สถานภาพ</label>
             <select name="insured_marital">
               <option value="">- เลือก -</option>
               <option>โสด</option>
@@ -145,6 +204,15 @@
               <option>หย่า</option>
               <option>หม้าย</option>
             </select>
+          </div>
+
+          <div class="field col-2">
+            <label>ชื่อ-นามสกุลคู่สมรส (ถ้ามี)</label>
+            <input type="text" name="spouse_name" />
+          </div>
+          <div class="field">
+            <label>เลขบัตรคู่สมรส (ถ้ามี)</label>
+            <input type="text" name="spouse_id" placeholder="13 หลัก" />
           </div>
 
           <div class="field">
@@ -158,77 +226,140 @@
           </div>
 
           <div class="field">
-            <label>โทรศัพท์บ้าน/ที่ทำงาน</label>
-            <input type="text" name="insured_phone_other" placeholder="ถ้ามี" />
+            <label>โทรศัพท์บ้าน</label>
+            <input type="text" name="insured_home_phone" placeholder="ถ้ามี" />
+          </div>
+
+          <div class="field">
+            <label>โทรศัพท์ที่ทำงาน</label>
+            <input type="text" name="insured_office_phone" placeholder="ถ้ามี" />
           </div>
         </div>
 
         <div class="divider"></div>
 
-        <h3 class="subhead">ที่อยู่ (ตามแบบฟอร์มมีหลายช่อง)</h3>
+        <h3 class="subhead">ข้อ 2 ที่อยู่ / ช่องทางติดต่อ</h3>
         <div class="grid">
           <div class="field col-2">
-            <label>ที่อยู่ตามทะเบียนบ้าน</label>
+            <label>2.1 ที่อยู่ตามทะเบียนบ้าน</label>
             <textarea name="addr_registered" rows="3" placeholder="บ้านเลขที่/หมู่/ถนน/แขวง-ตำบล/เขต-อำเภอ/จังหวัด/รหัสไปรษณีย์"></textarea>
           </div>
 
           <div class="field col-2">
-            <label>ที่อยู่ปัจจุบัน</label>
+            <label>2.2 ที่อยู่ปัจจุบัน</label>
             <textarea name="addr_current" rows="3"></textarea>
           </div>
 
           <div class="field col-2">
-            <label>ที่อยู่ที่ทำงาน</label>
+            <label>2.3 ที่อยู่ที่ทำงาน</label>
             <textarea name="addr_work" rows="3"></textarea>
           </div>
 
           <div class="field">
-            <label>ที่อยู่ที่ติดต่อได้ (เดิมเป็นติ๊กเลือก)</label>
+            <label>2.4 สถานที่ติดต่อได้</label>
             <select name="addr_contact_choice">
               <option value="">- เลือก -</option>
-              <option>ตามทะเบียนบ้าน</option>
+              <option>ที่อยู่ตามทะเบียนบ้าน</option>
               <option>ที่อยู่ปัจจุบัน</option>
               <option>ที่อยู่ที่ทำงาน</option>
             </select>
+          </div>
+
+          <div class="field col-2">
+            <label>2.5 อีเมล (ถ้ามี)</label>
+            <input type="email" name="contact_email2" />
+          </div>
+          <div class="field">
+            <label>2.5 โทรศัพท์มือถือ</label>
+            <input type="tel" name="contact_mobile2" />
+          </div>
+          <div class="field">
+            <label>2.5 โทรศัพท์บ้าน</label>
+            <input type="text" name="contact_home2" />
+          </div>
+          <div class="field">
+            <label>2.5 โทรศัพท์ที่ทำงาน</label>
+            <input type="text" name="contact_office2" />
           </div>
         </div>
 
         <div class="divider"></div>
 
-        <h3 class="subhead">อาชีพ/รายได้</h3>
+        <h3 class="subhead">ข้อ 3 อาชีพ / รายได้ / ลักษณะงาน</h3>
         <div class="grid">
           <div class="field">
-            <label>อาชีพ</label>
-            <input type="text" name="insured_job" />
+            <label>3.1 อาชีพประจำ</label>
+            <input type="text" name="job_main" />
           </div>
-
           <div class="field">
             <label>ตำแหน่ง</label>
-            <input type="text" name="insured_position" />
+            <input type="text" name="job_main_position" />
           </div>
-
-          <div class="field">
-            <label>ลักษณะงาน/ประเภทกิจการ</label>
-            <input type="text" name="insured_job_desc" />
-          </div>
-
           <div class="field">
             <label>รายได้ต่อปี (บาท)</label>
-            <input type="number" min="0" name="insured_income_year" placeholder="เช่น 600000" />
+            <input type="number" min="0" name="job_main_income_year" placeholder="เช่น 600000" />
+          </div>
+          <div class="field">
+            <label>ลักษณะงาน</label>
+            <input type="text" name="job_main_desc" />
+          </div>
+          <div class="field col-2">
+            <label>ลักษณะธุรกิจ/ประเภทกิจการ</label>
+            <input type="text" name="job_main_business" />
+          </div>
+
+          <div class="field">
+            <label>3.2 อาชีพอื่นๆ (ถ้ามี)</label>
+            <input type="text" name="job_other" />
+          </div>
+          <div class="field">
+            <label>ตำแหน่ง (อาชีพอื่น)</label>
+            <input type="text" name="job_other_position" />
+          </div>
+          <div class="field">
+            <label>รายได้ต่อปี (อาชีพอื่น)</label>
+            <input type="number" min="0" name="job_other_income_year" />
+          </div>
+          <div class="field">
+            <label>ลักษณะงาน (อาชีพอื่น)</label>
+            <input type="text" name="job_other_desc" />
+          </div>
+          <div class="field col-2">
+            <label>ลักษณะธุรกิจ/ประเภทกิจการ (อาชีพอื่น)</label>
+            <input type="text" name="job_other_business" />
+          </div>
+
+          <div class="field col-2">
+            <label>ใช้รถจักรยานยนต์ในการทำงานหรือไม่</label>
+            <select name="job_use_motorcycle">
+              <option value="">- เลือก -</option>
+              <option value="no">ไม่ใช้</option>
+              <option value="yes">ใช้</option>
+            </select>
           </div>
         </div>
       </section>
 
-      <!-- ===== Section: Policy / Premium ===== -->
-      <section class="section">
+      <!-- ===== Section: Policy / Premium (Q4.1-4.6) ===== -->
+      <section class="section" id="sec-policy">
         <div class="section-head">
-          <h2>แบบประกัน/เบี้ย/การชำระเงิน</h2>
-          <p class="muted">สรุปจากส่วน “จำนวนเงินที่ชำระ” และตัวเลือกงวด/วิธีชำระในแบบฟอร์ม :contentReference[oaicite:3]{index=3}</p>
+          <h2>ข้อ 4 แบบประกัน / เบี้ย / การชำระเงิน (4.1–4.6)</h2>
+          <p class="muted">กรอกเพื่อจำลองให้ครบตามแบบฟอร์ม</p>
         </div>
 
         <div class="grid">
           <div class="field col-2">
-            <label>แผน/ชื่อแบบประกัน (ข้อความ)</label>
+            <label>4) เลือกประเภทแบบประกัน (สรุป)</label>
+            <select name="policy_category">
+              <option value="">- เลือก -</option>
+              <option value="universal">4.1 ยูนิเวอร์แซลไลฟ์</option>
+              <option value="unit">4.2 ยูนิตลิงค์</option>
+              <option value="other">4.3 อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field col-2">
+            <label>ชื่อแบบประกัน/สัญญาเพิ่มเติม (ข้อความ)</label>
             <input type="text" name="plan_name" placeholder="เช่น แบบประกัน/สัญญาเพิ่มเติม" />
           </div>
 
@@ -243,57 +374,46 @@
           </div>
 
           <div class="field">
-            <label>งวดการชำระ (เดิมเป็นติ๊ก)</label>
-            <select name="pay_frequency">
+            <label>ระยะเวลาเอาประกัน (ปี)</label>
+            <input type="number" min="0" name="policy_term_year" />
+          </div>
+
+          <div class="field">
+            <label>ระยะเวลาชำระเบี้ย (ปี)</label>
+            <input type="number" min="0" name="pay_term_year" />
+          </div>
+
+          <div class="field">
+            <label>ชนิดเงินปันผล</label>
+            <select name="dividend_type">
               <option value="">- เลือก -</option>
-              <option>ครั้งเดียว</option>
-              <option>รายปี</option>
-              <option>ราย 6 เดือน</option>
-              <option>ราย 3 เดือน</option>
-              <option>รายเดือน</option>
+              <option value="none">ไม่มีเงินปันผล</option>
+              <option value="has">มีเงินปันผล</option>
             </select>
           </div>
 
           <div class="field">
-            <label>วิธีชำระ (เดิมเป็นติ๊ก)</label>
-            <select name="pay_method">
+            <label>กรณีมีเงินปันผล: วิธีรับ</label>
+            <select name="dividend_receive">
               <option value="">- เลือก -</option>
-              <option>เงินสด</option>
-              <option>เช็ค</option>
-              <option>บัตรเครดิต</option>
-              <option>อื่นๆ</option>
+              <option value="cash">ออมเป็นเงินสด</option>
+              <option value="accumulate">คงไว้สะสม</option>
             </select>
           </div>
 
           <div class="field">
-            <label>จำนวนเงินที่ชำระพร้อมใบคำขอ (บาท)</label>
-            <input type="number" min="0" name="paid_amount" />
-          </div>
-
-          <div class="field col-2">
-            <label>เลขที่ใบรับเงินชั่วคราว</label>
-            <input type="text" name="temp_receipt_no" />
-          </div>
-
-          <div class="field">
-            <label>ผู้ชำระเบี้ย: ชื่อ-สกุล</label>
-            <input type="text" name="payer_name" />
-          </div>
-
-          <div class="field">
-            <label>ผู้ชำระเบี้ย: อาชีพ</label>
-            <input type="text" name="payer_job" />
-          </div>
-
-          <div class="field">
-            <label>ผู้ชำระเบี้ย: ความสัมพันธ์</label>
-            <input type="text" name="payer_relation" />
+            <label>กรณีมีเงินคืน: วิธีรับ</label>
+            <select name="cashback_receive">
+              <option value="">- เลือก -</option>
+              <option value="cash">รับเป็นเงินสด</option>
+              <option value="accumulate">คงไว้สะสม</option>
+            </select>
           </div>
         </div>
 
         <div class="divider"></div>
 
-        <h3 class="subhead">การรับผลประโยชน์ผ่านบัญชีธนาคาร</h3>
+        <h3 class="subhead">4.4 การรับผลประโยชน์ผ่านบัญชีธนาคาร</h3>
         <div class="grid">
           <div class="field">
             <label>ชื่อบัญชี</label>
@@ -311,21 +431,111 @@
           </div>
 
           <div class="field">
-            <label>ต้องการโอนเข้าบัญชี? (เดิมเป็นข้อความยินยอม)</label>
+            <label>ต้องการโอนเข้าบัญชี?</label>
             <select name="bank_transfer_consent">
               <option value="">- เลือก -</option>
-              <option>ยินยอม/ประสงค์โอนเข้าบัญชี</option>
-              <option>ไม่ประสงค์/รับเป็นเช็ค</option>
+              <option value="yes">ยินยอม/ประสงค์โอนเข้าบัญชี</option>
+              <option value="no">ไม่ประสงค์/รับเป็นเช็ค</option>
             </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">4.5 สัญญาเพิ่มเติม/ข้อกำหนดแนบ (สรุป)</h3>
+        <div class="grid">
+          <div class="field col-2">
+            <label>รายการสัญญาเพิ่มเติมที่แนบ (เดิมเป็นติ๊กหลายข้อ → เลือกเป็นชุด)</label>
+            <select name="riders_pack">
+              <option value="">- เลือก -</option>
+              <option value="none">ไม่มี</option>
+              <option value="health">สุขภาพ/ค่ารักษาพยาบาล</option>
+              <option value="accident">อุบัติเหตุ</option>
+              <option value="critical">โรคร้ายแรง</option>
+              <option value="other">อื่นๆ (ระบุ)</option>
+            </select>
+          </div>
+          <div class="field col-2">
+            <label>รายละเอียดสัญญาเพิ่มเติมอื่นๆ</label>
+            <input type="text" name="riders_other_detail" placeholder="ระบุชื่อสัญญาเพิ่มเติม" />
+          </div>
+          <div class="field">
+            <label>ร้อยละ (ถ้ามี)</label>
+            <input type="number" min="0" max="100" name="riders_percent" />
+          </div>
+          <div class="field">
+            <label>จำนวนเงินเอาประกัน (ถ้ามี)</label>
+            <input type="number" min="0" name="riders_sum_assured" />
+          </div>
+          <div class="field">
+            <label>ผลประโยชน์ (ถ้ามี)</label>
+            <input type="text" name="riders_benefit" />
+          </div>
+          <div class="field">
+            <label>เบี้ยที่ชำระ (ถ้ามี)</label>
+            <input type="number" min="0" name="riders_premium" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">4.6 จำนวนเงินที่ชำระพร้อมใบคำขอฯ</h3>
+        <div class="grid">
+          <div class="field">
+            <label>จำนวนเงินที่ชำระ (บาท)</label>
+            <input type="number" min="0" name="paid_amount" />
+          </div>
+
+          <div class="field col-2">
+            <label>เลขที่ใบรับเงินชั่วคราว</label>
+            <input type="text" name="temp_receipt_no" />
+          </div>
+
+          <div class="field">
+            <label>วิธีชำระ</label>
+            <select name="pay_method">
+              <option value="">- เลือก -</option>
+              <option>เงินสด</option>
+              <option>เช็ค</option>
+              <option>บัตรเครดิต</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>งวดการชำระ</label>
+            <select name="pay_frequency">
+              <option value="">- เลือก -</option>
+              <option>ครั้งเดียว</option>
+              <option>รายปี</option>
+              <option>ราย 6 เดือน</option>
+              <option>ราย 3 เดือน</option>
+              <option>รายเดือน</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ผู้ชำระเบี้ย: ชื่อ-สกุล</label>
+            <input type="text" name="payer_name" />
+          </div>
+
+          <div class="field">
+            <label>ผู้ชำระเบี้ย: อาชีพ</label>
+            <input type="text" name="payer_job" />
+          </div>
+
+          <div class="field">
+            <label>ผู้ชำระเบี้ย: ความสัมพันธ์กับผู้เอาประกัน</label>
+            <input type="text" name="payer_relation" />
           </div>
         </div>
       </section>
 
-      <!-- ===== Section: Beneficiaries ===== -->
-      <section class="section">
+      <!-- ===== Section: Beneficiaries (Q5) ===== -->
+      <section class="section" id="sec-benef">
         <div class="section-head">
-          <h2>ผู้รับประโยชน์</h2>
-          <p class="muted">แบบฟอร์มมีตาราง “ชื่อ-สกุล/เลขบัตร/อายุ/ความสัมพันธ์/ที่อยู่/ร้อยละ” :contentReference[oaicite:4]{index=4}</p>
+          <h2>ข้อ 5 ผู้รับประโยชน์</h2>
+          <p class="muted">ตาราง “ชื่อ-สกุล/เลขบัตร/อายุ/ความสัมพันธ์/ที่อยู่/ร้อยละ”</p>
         </div>
 
         <div class="table-wrap">
@@ -341,9 +551,7 @@
                 <th style="width: 6%"></th>
               </tr>
             </thead>
-            <tbody>
-              <!-- rows by JS -->
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
 
@@ -352,102 +560,291 @@
         </div>
       </section>
 
-      <!-- ===== Section: Health Questions (simulate) ===== -->
-      <section class="section">
+      <!-- ===== Minor Questions (Q6-14) ===== -->
+      <section class="section hidden" id="sec-minor">
         <div class="section-head">
-          <h2>คำถามสุขภาพ (จำลองการคีย์)</h2>
-          <p class="muted">ในเอกสารมีหลายข้อเป็น “ไม่เคย/เคย”, “ไม่มี/มี”, และรายการโรคจำนวนมาก — ในหน้านี้ทำเป็น dropdown + ช่องรายละเอียด :contentReference[oaicite:5]{index=5}</p>
+          <h2>คำถามสำหรับผู้เยาว์ (ข้อ 6–14)</h2>
+          <p class="muted">แสดงเมื่อ “ประเภทผู้เอาประกัน = ผู้เยาว์”</p>
         </div>
 
+        <h3 class="subhead">ข้อ 6 ข้อมูลบิดา/มารดา</h3>
         <div class="grid">
-          <div class="field col-2">
-            <label>เคยป่วย/รักษา/ผ่าตัด/ตรวจสุขภาพสำคัญในช่วงที่ผ่านมา? (เดิมเป็นติ๊ก)</label>
-            <select name="health_history_any">
-              <option value="">- เลือก -</option>
-              <option>ไม่เคย</option>
-              <option>เคย</option>
-            </select>
+          <div class="field col-2"><label>ชื่อ-นามสกุลบิดา</label><input type="text" name="q6_father_name"></div>
+          <div class="field"><label>สถานะบิดา</label>
+            <select name="q6_father_status"><option value="">- เลือก -</option><option>ยังมีชีวิตอยู่</option><option>เสียชีวิต</option></select>
           </div>
+          <div class="field"><label>เลขบัตรบิดา</label><input type="text" name="q6_father_id" placeholder="13 หลัก"></div>
 
-          <div class="field col-2">
-            <label>รายละเอียด (ถ้า “เคย”)</label>
-            <textarea name="health_history_detail" rows="3" placeholder="ระบุอาการ/โรค/วันเดือนปี/สถานพยาบาล/ผลการรักษา"></textarea>
+          <div class="field col-2"><label>ชื่อ-นามสกุลมารดา</label><input type="text" name="q6_mother_name"></div>
+          <div class="field"><label>สถานะมารดา</label>
+            <select name="q6_mother_status"><option value="">- เลือก -</option><option>ยังมีชีวิตอยู่</option><option>เสียชีวิต</option></select>
           </div>
+          <div class="field"><label>เลขบัตรมารดา</label><input type="text" name="q6_mother_id" placeholder="13 หลัก"></div>
+        </div>
 
-          <div class="field">
-            <label>สูบบุหรี่? (เดิมเป็นติ๊ก)</label>
-            <select name="smoking">
-              <option value="">- เลือก -</option>
-              <option>ไม่เคย</option>
-              <option>เคย</option>
-              <option>ปัจจุบัน</option>
-            </select>
-          </div>
+        <div class="divider"></div>
 
-          <div class="field">
-            <label>ดื่มแอลกอฮอล์? (เดิมเป็นติ๊ก)</label>
-            <select name="alcohol">
-              <option value="">- เลือก -</option>
-              <option>ไม่เคย</option>
-              <option>เคย</option>
-              <option>ปัจจุบัน</option>
-            </select>
+        <h3 class="subhead">ข้อ 7 กรมธรรม์เดิม/กำลังขอที่อื่น (ผู้เยาว์)</h3>
+        <div class="grid">
+          <div class="field"><label>มีหรือไม่</label>
+            <select name="q7_has_policy"><option value="">- เลือก -</option><option>ไม่มี</option><option>มี</option></select>
           </div>
+          <div class="field col-3"><label>รายละเอียดข้อ 7</label><textarea name="q7_detail" rows="3"></textarea></div>
+        </div>
 
-          <div class="field col-2">
-            <label>โรคประจำตัว/โรคร้ายแรง (เลือกแบบ dropdown เพื่อจำลอง)</label>
-            <select name="disease_group">
-              <option value="">- เลือก -</option>
-              <option>ไม่มี</option>
-              <option>เบาหวาน</option>
-              <option>ความดันโลหิตสูง</option>
-              <option>โรคหัวใจ/หลอดเลือด</option>
-              <option>โรคมะเร็ง</option>
-              <option>โรคไต</option>
-              <option>โรคตับ</option>
-              <option>โรคปอด/ทางเดินหายใจ</option>
-              <option>อื่นๆ</option>
-            </select>
+        <h3 class="subhead">ข้อ 8 เคยถูกปฏิเสธ/เลื่อน/เพิ่มเบี้ย/เปลี่ยนเงื่อนไข ฯลฯ (ผู้เยาว์)</h3>
+        <div class="grid">
+          <div class="field"><label>เคยหรือไม่</label>
+            <select name="q8_reject"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
           </div>
+          <div class="field col-3"><label>รายละเอียดข้อ 8</label><textarea name="q8_detail" rows="3"></textarea></div>
+        </div>
 
-          <div class="field col-2">
-            <label>รายละเอียดเพิ่มเติม</label>
-            <textarea name="disease_detail" rows="3" placeholder="ระบุชื่อโรค/ปีที่เริ่มเป็น/การรักษา/อาการปัจจุบัน/สถานพยาบาล"></textarea>
+        <h3 class="subhead">ข้อ 9 ประวัติครอบครัว (ผู้เยาว์)</h3>
+        <div class="grid">
+          <div class="field"><label>มีโรคสำคัญหรือไม่</label>
+            <select name="q9_family_disease"><option value="">- เลือก -</option><option>ไม่เป็น</option><option>เป็น</option></select>
           </div>
+          <div class="field col-3"><label>รายละเอียดข้อ 9 (เป็นใคร/โรค/อายุเริ่มเป็น)</label><textarea name="q9_detail" rows="3"></textarea></div>
+        </div>
 
-          <div class="field">
-            <label>เคยตรวจ HIV? (เดิมเป็นติ๊ก)</label>
-            <select name="hiv">
-              <option value="">- เลือก -</option>
-              <option>ไม่เคย</option>
-              <option>เคย (ผลลบ)</option>
-              <option>เคย (ผลบวก)</option>
-            </select>
+        <h3 class="subhead">ข้อ 10 ส่วนสูง/น้ำหนัก + น้ำหนักเปลี่ยนใน 6 เดือน (ผู้เยาว์)</h3>
+        <div class="grid">
+          <div class="field"><label>ส่วนสูง (ซม.)</label><input type="number" name="q10_height_cm"></div>
+          <div class="field"><label>น้ำหนัก (กก.)</label><input type="number" name="q10_weight_kg"></div>
+          <div class="field"><label>น้ำหนักเปลี่ยนหรือไม่</label>
+            <select name="q10_weight_change"><option value="">- เลือก -</option><option>ไม่เปลี่ยน</option><option>เปลี่ยน</option></select>
           </div>
+          <div class="field"><label>เปลี่ยนแบบ</label>
+            <select name="q10_change_type"><option value="">- เลือก -</option><option>เพิ่มขึ้น</option><option>ลดลง</option></select>
+          </div>
+          <div class="field col-2"><label>จำนวน/สาเหตุ</label><input type="text" name="q10_change_detail"></div>
+        </div>
 
-          <div class="field">
-            <label>การตั้งครรภ์/เฉพาะสตรี (เดิมเป็นติ๊ก)</label>
-            <select name="pregnant_status">
-              <option value="">- เลือก -</option>
-              <option>ไม่เกี่ยวข้อง</option>
-              <option>ไม่ตั้งครรภ์</option>
-              <option>ตั้งครรภ์</option>
-              <option>หลังคลอดไม่นาน</option>
-            </select>
+        <h3 class="subhead">ข้อ 11 สุขภาพโดยรวม (ผู้เยาว์)</h3>
+        <div class="grid">
+          <div class="field col-2"><label>สุขภาพสมบูรณ์/ไม่พิการ/ไม่ทุพพลภาพ/ไม่เอดส์/ไม่ภูมิคุ้มกันบกพร่อง/ไม่โรคร้ายแรง?</label>
+            <select name="q11_healthy"><option value="">- เลือก -</option><option>ใช่</option><option>ไม่ใช่</option></select>
           </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 11 (ถ้าไม่ใช่)</label><textarea name="q11_detail" rows="3"></textarea></div>
+        </div>
+
+        <h3 class="subhead">ข้อ 12 ประวัติรักษา 5 ปี (ผู้เยาว์)</h3>
+        <div class="grid">
+          <div class="field"><label>เคยหรือไม่</label>
+            <select name="q12_medical_history"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-3"><label>รายละเอียดข้อ 12 (อาการ/วันเดือนปี/สถานพยาบาล/ผลการรักษา)</label><textarea name="q12_detail" rows="3"></textarea></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">ข้อ 13–14 ข้อมูลผู้ชำระเบี้ยของผู้เยาว์</h3>
+        <div class="grid">
+          <div class="field"><label>ชื่อ</label><input type="text" name="q13_firstname"></div>
+          <div class="field"><label>นามสกุล</label><input type="text" name="q13_lastname"></div>
+          <div class="field"><label>เพศ</label>
+            <select name="q13_gender"><option value="">- เลือก -</option><option>ชาย</option><option>หญิง</option></select>
+          </div>
+          <div class="field"><label>วันเดือนปีเกิด</label><input type="date" name="q13_dob"></div>
+          <div class="field col-2"><label>เลขบัตรประชาชน</label><input type="text" name="q13_id" placeholder="13 หลัก"></div>
+          <div class="field col-2"><label>หนังสือเดินทางเลขที่/วันหมดอายุ</label><input type="text" name="q13_passport" placeholder="เลขที่ / วันหมดอายุ"></div>
+
+          <div class="field col-2"><label>14.1 ที่อยู่ตามทะเบียนบ้าน</label><textarea name="q14_addr_registered" rows="3"></textarea></div>
+          <div class="field col-2"><label>14.2 ที่อยู่ปัจจุบัน</label><textarea name="q14_addr_current" rows="3"></textarea></div>
+          <div class="field col-2"><label>14.3 ที่อยู่ที่ทำงาน</label><textarea name="q14_addr_work" rows="3"></textarea></div>
+          <div class="field"><label>14.4 สถานที่ติดต่อ</label>
+            <select name="q14_contact_place"><option value="">- เลือก -</option><option>ที่อยู่ตามทะเบียนบ้าน</option><option>ที่อยู่ปัจจุบัน</option><option>ที่ทำงาน</option></select>
+          </div>
+          <div class="field col-2"><label>14.5 อีเมล</label><input type="email" name="q14_email"></div>
+          <div class="field"><label>14.5 โทรมือถือ</label><input type="text" name="q14_mobile"></div>
+          <div class="field"><label>14.5 โทรบ้าน</label><input type="text" name="q14_home"></div>
+          <div class="field"><label>14.5 โทรที่ทำงาน</label><input type="text" name="q14_office"></div>
         </div>
       </section>
 
-      <!-- ===== Section: FATCA / Consent ===== -->
-      <section class="section">
+      <!-- ===== Adult Questions (Q15-28) ===== -->
+      <section class="section hidden" id="sec-adult">
+        <div class="section-head">
+          <h2>คำถามสำหรับผู้เอาประกันอายุ 16 ปีขึ้นไป (ข้อ 15–28)</h2>
+          <p class="muted">แสดงเมื่อ “ประเภทผู้เอาประกัน = อายุ 16+”</p>
+        </div>
+
+        <div class="grid">
+          <div class="field col-2"><label>ข้อ 15 มีกรมธรรม์เดิม/กำลังขอที่อื่น</label>
+            <select name="q15_has_policy"><option value="">- เลือก -</option><option>ไม่มี</option><option>มี</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 15</label><textarea name="q15_detail" rows="3"></textarea></div>
+
+          <div class="field col-2"><label>ข้อ 16 เคยถูกปฏิเสธ/เลื่อน/เพิ่มเบี้ย/เปลี่ยนเงื่อนไข</label>
+            <select name="q16_reject"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 16</label><textarea name="q16_detail" rows="3"></textarea></div>
+
+          <div class="field"><label>ข้อ 17 เกี่ยวข้องคดียาเสพติด</label>
+            <select name="q17_drug_case"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+
+          <div class="field"><label>ข้อ 18 เสพ/เคยเสพ/พยายามเสพยาเสพติด</label>
+            <select name="q18_drug_use"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 18 (ชนิด/ปริมาณ/ความถี่/กี่ปี)</label><textarea name="q18_detail" rows="3"></textarea></div>
+
+          <div class="field"><label>ข้อ 19 ดื่มแอลกอฮอล์เป็นประจำ</label>
+            <select name="q19_alcohol"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 19</label><textarea name="q19_detail" rows="3"></textarea></div>
+
+          <div class="field"><label>ข้อ 20 สูบบุหรี่</label>
+            <select name="q20_smoke"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 20</label><textarea name="q20_detail" rows="3"></textarea></div>
+
+          <div class="field"><label>ข้อ 21 ส่วนสูง (ซม.)</label><input type="number" name="q21_height_cm"></div>
+          <div class="field"><label>ข้อ 21 น้ำหนัก (กก.)</label><input type="number" name="q21_weight_kg"></div>
+          <div class="field"><label>ข้อ 21 น้ำหนักเปลี่ยนใน 6 เดือน</label>
+            <select name="q21_weight_change"><option value="">- เลือก -</option><option>ไม่เปลี่ยน</option><option>เปลี่ยน</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดน้ำหนัก (เพิ่ม/ลด/สาเหตุ)</label><input type="text" name="q21_weight_detail"></div>
+
+          <div class="field col-2"><label>ข้อ 22 ประวัติครอบครัวมีโรคสำคัญ</label>
+            <select name="q22_family_disease"><option value="">- เลือก -</option><option>ไม่เป็น</option><option>เป็น</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 22</label><textarea name="q22_detail" rows="3"></textarea></div>
+
+          <div class="field col-2"><label>ข้อ 23 คู่สมรสเป็น HIV/ไวรัสตับอักเสบ</label>
+            <select name="q23_spouse_hiv"><option value="">- เลือก -</option><option>ไม่เป็น</option><option>เป็น</option></select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">ข้อ 24 โรคที่เคยได้รับการวินิจฉัย/รักษา (เลือกต่อรายการ → dropdown)</h3>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>โรค/ภาวะ</th><th style="width:180px">สถานะ</th><th>รายละเอียด (วันเดือนปี/การรักษา/สถานพยาบาล)</th></tr></thead>
+            <tbody>
+              <tr><td>โรคหัวใจ/หลอดเลือด</td><td><select name="q24_heart"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_heart_detail"></td></tr>
+              <tr><td>ความดันโลหิตสูง</td><td><select name="q24_ht"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_ht_detail"></td></tr>
+              <tr><td>เบาหวาน</td><td><select name="q24_dm"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_dm_detail"></td></tr>
+              <tr><td>โรคมะเร็ง/เนื้องอก</td><td><select name="q24_cancer"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_cancer_detail"></td></tr>
+              <tr><td>โรคไต</td><td><select name="q24_kidney"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_kidney_detail"></td></tr>
+              <tr><td>โรคตับ/ไวรัสตับอักเสบ</td><td><select name="q24_liver"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_liver_detail"></td></tr>
+              <tr><td>โรคปอด/ทางเดินหายใจ</td><td><select name="q24_lung"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_lung_detail"></td></tr>
+              <tr><td>โรคทางระบบประสาท/สมอง</td><td><select name="q24_neuro"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_neuro_detail"></td></tr>
+              <tr><td>โรคทางจิตเวช/ซึมเศร้า</td><td><select name="q24_psy"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_psy_detail"></td></tr>
+              <tr><td>อื่นๆ</td><td><select name="q24_other"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย/เป็น</option></select></td><td><input type="text" name="q24_other_detail" placeholder="ระบุโรค"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">ข้อ 25 อาการ (รวมอาการใน 6 เดือน + เฉพาะสตรี)</h3>
+        <div class="grid">
+          <div class="field col-2"><label>ข้อ 25 มีอาการ/เคยมีอาการหรือไม่</label>
+            <select name="q25_has_symptom"><option value="">- เลือก -</option><option>ไม่เคย/ไม่มี</option><option>เคย/มี</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดอาการ (ระบุอาการ/วันเริ่ม/อาการปัจจุบัน)</label><textarea name="q25_detail" rows="3"></textarea></div>
+
+          <div class="field"><label>เฉพาะสตรี: ตั้งครรภ์</label>
+            <select name="q25_pregnant"><option value="">- เลือก -</option><option>ไม่ใช่</option><option>ใช่</option></select>
+          </div>
+          <div class="field"><label>จำนวนเดือน (ถ้าตั้งครรภ์)</label><input type="number" name="q25_pregnant_month"></div>
+          <div class="field"><label>โรคแทรกซ้อนตั้งครรภ์/คลอดบุตร</label>
+            <select name="q25_preg_complication"><option value="">- เลือก -</option><option>ไม่มี</option><option>มี</option></select>
+          </div>
+          <div class="field"><label>เลือดออกผิดปกติทางช่องคลอด</label>
+            <select name="q25_bleeding"><option value="">- เลือก -</option><option>ไม่มี</option><option>มี</option></select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">ข้อ 26 ประวัติการตรวจ/รักษา 5 ปี</h3>
+        <div class="grid">
+          <div class="field col-2"><label>26.1 ตรวจสุขภาพ/ตรวจวินิจฉัยโรค/เอกซเรย์/ตรวจเลือด ฯลฯ</label>
+            <select name="q26_1_exam"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียด 26.1</label><textarea name="q26_1_detail" rows="3"></textarea></div>
+
+          <div class="field col-2"><label>26.2 บาดเจ็บ/ผ่าตัด/รักษาในโรงพยาบาล</label>
+            <select name="q26_2_hospital"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียด 26.2</label><textarea name="q26_2_detail" rows="3"></textarea></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="subhead">ข้อ 27 (สัญญาเพิ่มเติมสุขภาพ) โรคเพิ่มเติม</h3>
+        <div class="grid">
+          <div class="field col-2"><label>เคย/เป็นโรคในรายการหรือไม่</label>
+            <select name="q27_has_extra_health"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 27</label><textarea name="q27_detail" rows="3"></textarea></div>
+        </div>
+
+        <h3 class="subhead">ข้อ 28 รายละเอียดเพิ่มเติม</h3>
+        <div class="grid">
+          <div class="field col-4"><label>รายละเอียดเพิ่มเติม</label><textarea name="q28_more" rows="4"></textarea></div>
+        </div>
+      </section>
+
+      <!-- ===== SIO Questions (Q29-31) ===== -->
+      <section class="section hidden" id="sec-sio">
+        <div class="section-head">
+          <h2>ส่วนที่ 2 (SIO) ข้อ 29–31</h2>
+          <p class="muted">แสดงเมื่อ “ประเภทแบบคำขอ = SIO”</p>
+        </div>
+
+        <div class="grid">
+          <div class="field col-2"><label>ข้อ 29 เคยได้รับการวินิจฉัย/รักษาโรคตามรายการ (SIO)</label>
+            <select name="q29_sio_disease"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 29</label><textarea name="q29_detail" rows="3"></textarea></div>
+
+          <div class="field col-2"><label>ข้อ 30.1 คลำพบก้อนเนื้อ</label>
+            <select name="q30_1_lump"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 30.1</label><input type="text" name="q30_1_detail"></div>
+
+          <div class="field col-2"><label>ข้อ 30.2 อาการใน 6 เดือน</label>
+            <select name="q30_2_symptom"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 30.2</label><input type="text" name="q30_2_detail"></div>
+
+          <div class="field col-2"><label>ข้อ 31 3 ปีที่ผ่านมา เคยตรวจ/เข้ารพ./ตรวจเลือด/เอกซเรย์/ตรวจหัวใจ ฯลฯ</label>
+            <select name="q31_checkup"><option value="">- เลือก -</option><option>ไม่เคย</option><option>เคย</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียดข้อ 31</label><textarea name="q31_detail" rows="3"></textarea></div>
+        </div>
+      </section>
+
+      <!-- ===== Unit Linked (Q32) ===== -->
+      <section class="section hidden" id="sec-unit">
+        <div class="section-head">
+          <h2>ส่วนที่ 3 (Unit Linked) ข้อ 32</h2>
+          <p class="muted">แสดงเมื่อ “ประเภทแบบคำขอ = ยูนิตลิงค์”</p>
+        </div>
+
+        <div class="grid">
+          <div class="field col-2"><label>ข้อ 32 มีบุตร/ผู้อยู่ในอุปการะที่ยังไม่บรรลุนิติภาวะหรือไม่</label>
+            <select name="q32_has_minor_child"><option value="">- เลือก -</option><option>ไม่มี</option><option>มี</option></select>
+          </div>
+          <div class="field col-2"><label>รายละเอียด (ชื่อ/เลขบัตร/อายุ)</label><textarea name="q32_detail" rows="3"></textarea></div>
+        </div>
+      </section>
+
+      <!-- ===== FATCA / Consent ===== -->
+      <section class="section" id="sec-fatca">
         <div class="section-head">
           <h2>FATCA / การให้ความยินยอม</h2>
-          <p class="muted">อ้างอิงส่วน “Consent and Verification… FATCA” :contentReference[oaicite:6]{index=6}</p>
+          <p class="muted">ทำเป็น dropdown เพื่อจำลอง</p>
         </div>
 
         <div class="grid">
           <div class="field col-2">
-            <label>สถานะเกี่ยวข้อง US Person? (เดิมเป็นข้อความ/ติ๊กยืนยัน)</label>
+            <label>สถานะเกี่ยวข้อง US Person?</label>
             <select name="us_person">
               <option value="">- เลือก -</option>
               <option>ไม่ใช่ US Person</option>
@@ -457,7 +854,7 @@
           </div>
 
           <div class="field col-2">
-            <label>ยินยอมให้เปิดเผยข้อมูลตาม FATCA? (จำลอง)</label>
+            <label>ยินยอมให้เปิดเผยข้อมูลตาม FATCA?</label>
             <select name="fatca_consent">
               <option value="">- เลือก -</option>
               <option>ยินยอม</option>
@@ -465,22 +862,23 @@
             </select>
           </div>
 
-          <div class="field col-2">
+          <div class="field col-4">
             <label>หมายเหตุ FATCA</label>
             <textarea name="fatca_note" rows="3"></textarea>
           </div>
         </div>
       </section>
 
-      <!-- ===== Footer ===== -->
-      <section class="section">
+      <!-- ===== Sign ===== -->
+      <section class="section" id="sec-sign">
         <div class="section-head">
-          <h2>สรุป/การลงนาม (จำลอง)</h2>
+          <h2>การยืนยันและลงนาม (จำลอง)</h2>
+          <p class="muted">สำหรับทดสอบหน้าคีย์ (ไม่เก็บลายเซ็นจริง)</p>
         </div>
 
         <div class="grid">
           <div class="field">
-            <label>จังหวัดที่ลงนาม</label>
+            <label>เขียนที่ (จังหวัด)</label>
             <input type="text" name="sign_province" />
           </div>
 
@@ -497,6 +895,15 @@
           <div class="field col-2">
             <label>ชื่อพยาน/ตัวแทน (ถ้ามี)</label>
             <input type="text" name="sign_witness_name" />
+          </div>
+
+          <div class="field col-2">
+            <label>ยืนยันข้อความการขอเอาประกัน/ให้ความยินยอม (เดิมเป็นข้อความให้ติ๊ก)</label>
+            <select name="confirm_accept">
+              <option value="">- เลือก -</option>
+              <option value="accept">ยอมรับ/ยินยอม</option>
+              <option value="decline">ไม่ยอมรับ</option>
+            </select>
           </div>
         </div>
 
